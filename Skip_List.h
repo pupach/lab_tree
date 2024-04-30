@@ -28,6 +28,8 @@ typedef struct {
     Node *head;
     Node *tail;
 
+    int size;
+
 }List;
 
 #endif //LAB_TREE_SKIP_LIST_H
