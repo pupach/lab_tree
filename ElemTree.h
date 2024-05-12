@@ -8,7 +8,8 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <string.h>
-
+#define LOG(args...) \
+    //fprintf(stderr, args)
 
 extern struct ElemTree;
 

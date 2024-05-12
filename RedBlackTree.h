@@ -12,24 +12,20 @@
 #include <string.h>
 #include <time.h>
 
-#include "ElemTree.h"
-
 
 #define POISON_VAL 2000000
 #define MAX(a, b) \
   (a > b ? a : b)
 #define MAX_SIZE_COM 3
-#define LOG(args...) \
-    //   fprintf(stderr, args)
 
 
 typedef struct
 {
-    struct ElemTree *prev;
+    struct ElemRBT *prev;
     bool red;
     int val;
-    struct ElemTree* right;
-    struct ElemTree* left;
+    struct ElemRBT* right;
+    struct ElemRBT* left;
 }ElemRBT;
 
 ElemRBT *InsertRBT(ElemRBT *head, ElemRBT *elem);

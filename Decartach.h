@@ -15,10 +15,8 @@
 #define MAX(a, b) \
   (a > b ? a : b)
 #define MAX_SIZE_COM 3
-#define LOG(args...) \
-    //   fprintf(stderr, args)
 
-int deep = 0;
+
 
 #include "ElemTree.h"
 

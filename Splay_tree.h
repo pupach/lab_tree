@@ -19,8 +19,6 @@
 #define MAX(a, b) \
   (a > b ? a : b)
 #define MAX_SIZE_COM 3
-#define LOG(args...) \
-       //   fprintf(stderr, args)
 
 
 ElemTree *InsertSplay(ElemTree *tree, ElemTree *ElemToIns);

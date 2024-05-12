@@ -17,8 +17,7 @@
 #define MAX(a, b) \
   (a > b ? a : b)
 #define MAX_SIZE_COM 3
-#define LOG(args...) \
-       //   fprintf(stderr, args)
+
 
 typedef struct{
     ElemTree *head;
@@ -28,5 +27,7 @@ typedef struct{
 void InsertAvl(AvlTree *tree, ElemTree *ElemToIns);
 
 void RemoveAvl(AvlTree *tree, int elem);
+
+ElemTree *AvlRemove(ElemTree *avl, int key);
 
 #endif //LAB_TREE_AVL_TREE_H

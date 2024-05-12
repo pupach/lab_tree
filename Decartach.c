@@ -1,4 +1,5 @@
 #include "Decartach.h"
+int deep = 0;
 
 void SetHigh1Decartch(ElemTree *head)
 {
@@ -14,7 +15,7 @@ void SetHigh1Decartch(ElemTree *head)
 void SetHighDecartch(ElemTree *head)
 {
   deep++;
-  if(deep == 1000000)  exit(-1);
+  //if(deep == 1000000)  exit(-1);
   if(head == NULL) return;
 
   SetHighDecartch(head->left);
@@ -25,7 +26,6 @@ void SetHighDecartch(ElemTree *head)
 SlicersTree SliceDecart(ElemTree *head, int val_to_slice)
 {
   deep++;
-  if(deep == 1000000)  exit(-1);
 
   SlicersTree to_ret = {};
   if(head == NULL)  return to_ret;
@@ -58,12 +58,13 @@ SlicersTree SliceDecart(ElemTree *head, int val_to_slice)
 ElemTree *MergeDecart(ElemTree *min, ElemTree *max)
 {
   deep++;
-  if(deep == 1000000)  exit(-1);
+  //if(deep == 1000000)  exit(-1);
 
   if((min == NULL) && (max == NULL))  return NULL;
   else if(min == NULL)                return max;
   else if(max == NULL)                return min;
   ElemTree *head, *another;
+
   if(min->priorety > max->priorety)
   {
     max->left = MergeDecart(min, max->left);
@@ -92,68 +93,6 @@ ElemTree *InsertDecart(ElemTree *tree, ElemTree * val)
   ElemTree *new_min = MergeDecart(res.min, val);
   tree = MergeDecart(new_min, res.max);
   return tree;
-}
-
-ElemTree *DeleteDecart(ElemTree *tree, int val)
-{
-  SlicersTree res = SliceDecart(tree, val);
-  SlicersTree res_new = SliceDecart(res.max, val + 1);
-  tree = MergeDecart(res.min, res_new.max );
-  return tree;
-}
-
-ElemTree *KnumberStatistic(ElemTree *tree, int k)
-{
-  if(tree == NULL)  return NULL;
-
-  LOG("KnumberStatistic k = %d tree_val = %d tree_size = %d\n", k, tree->val, tree->size);
-  ElemTree *left, *right;
-  left = tree->left;
-  right = tree->right;
-  if((left != NULL) && (left->size >= (k + 1)))
-  {
-    return KnumberStatistic(left, k);
-  }
-  else if((left != NULL) && (left->size + 1) == (k + 1))
-  {
-    return tree;
-  }
-  else if((left == NULL) && ((tree->size - 1) == k))
-  {
-    return tree;
-  }
-  else if((left == NULL) && (k == 0)) return tree;
-  else
-  {
-    int left_size;
-    if(left == NULL)  left_size = 0;
-    else    left_size = left->size;
-    return KnumberStatistic(right, k - (left_size + 1));
-  }
-}
-
-bool ExistsDecart(ElemTree *cur_el, int ogr)
-{
-  int res = POISON_VAL;
-  int cnt = 0;
-  while(cur_el != NULL)
-  {
-    cnt++;
-    if(cnt == 100000)  exit(-1);
-    if(cur_el->val == ogr)
-    {
-      return true;
-    }
-    else if(cur_el->val < ogr)
-    {
-      cur_el = cur_el->right;
-    }
-    else if(cur_el->val > ogr)
-    {
-      cur_el = cur_el->left;
-    }
-  }
-  return false;
 }
 
 ElemTree *RemoveDecart(ElemTree *head, int elem)

@@ -1,3 +1,5 @@
+/home/pupach/CLionProjects/lab_tree/cmake-build-debug/CMakeFiles/gen_graph.dir
+/home/pupach/CLionProjects/lab_tree/cmake-build-debug/CMakeFiles/python.dir
 /home/pupach/CLionProjects/lab_tree/cmake-build-debug/CMakeFiles/Gen_data.dir
 /home/pupach/CLionProjects/lab_tree/cmake-build-debug/CMakeFiles/edit_cache.dir
 /home/pupach/CLionProjects/lab_tree/cmake-build-debug/CMakeFiles/rebuild_cache.dir

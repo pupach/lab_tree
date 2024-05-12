@@ -153,31 +153,32 @@ SlicersTree Split(ElemTree *tree, int elem)
   if(tree == NULL)  return ret;
 
   tree = FindMinElSplay(tree, elem);
+  LOG("tree-min = %d\n", tree->val);
+
   if((CmpTreeElem(tree, elem) > 0))
   {
     SetParent(tree->left, NULL);
-
-
     ret.min = tree->left;
     ret.max = tree;
     tree->left = NULL;
     return ret;
   }
-  else if((CmpTreeElem(tree, elem) < 0))
-  {
-    SetParent(tree->right, NULL);
+  else{
+      SetParent(tree->right, NULL);
 
-
-    ret.max = tree->right;
-    ret.min = tree;
-    tree->right = NULL;
-    return ret;
+        ret.max = tree->right;
+        ret.min = tree;
+        tree->right = NULL;
+        return ret;
   }
 }
 
 ElemTree *InsertSplay(ElemTree *tree, ElemTree *ElemToIns)
 {
   SlicersTree ret = Split(tree, ElemToIns->val);
+  if(tree != NULL) {
+      LOG("tree.val = %d ElemToIns.val = %d\n ret.min = %p ret.max = %p\n", tree->val, ElemToIns->val, ret.min, ret.max);
+  }
 
   SetParent(ret.min, ElemToIns);
   SetParent(ret.max, ElemToIns);

@@ -9,9 +9,8 @@
 #include <stdbool.h>
 #include <string.h>
 
-#define POISON_NEGATIVE -10000000
-#define POISON_POSITIVE 10000000
-
+#define POISON_NEGATIVE -1000000000
+#define POISON_POSITIVE 1000000000
 extern struct Node;
 
 typedef struct {
@@ -31,5 +30,11 @@ typedef struct {
     int size;
 
 }List;
+
+void ListInit(List *list, int MAX_SIZE_ARR);
+
+Node *Remove(List *list, int ToRemove);
+
+Node *Insert(List *list, Node *ToInsert);
 
 #endif //LAB_TREE_SKIP_LIST_H
