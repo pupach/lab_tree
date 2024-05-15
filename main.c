@@ -1,11 +1,11 @@
 #include <stdio.h>
-#include "Avl_tree.h"
-#include "Decartach.h"
-#include "Splay_tree.h"
-#include "RedBlackTree.h"
-#include "Skip_List.h"
-#include "BinTree.h"
-#include "b_tree.h"
+#include "avl\avl_tree.h"
+#include "decart\decart_tree.h"
+#include "splay\splay_tree.h"
+#include "rb\rb_tree.h"
+#include "skip\skip_list.h"
+#include "bin\bin_tree.h"
+#include "b\b_tree.h"
 
 typedef struct{
     clock_t Insert;
@@ -193,18 +193,18 @@ TestTimeAll DoTest(int size, int max_size)
 int main() {
   TestTimeAll time;
   FILE *stream_BTree_insert    = fopen("../data/BTree_insert.txt",    "w");
-  FILE *stream_Skip_insert    = fopen("../data/Skip_insert.txt",    "w");
-  FILE *stream_Skip_remove    = fopen("../data/Skip_remove.txt",    "w");
-  FILE *stream_Bin_insert    = fopen("../data/Bin_insert.txt",    "w");
-  FILE *stream_Bin_remove    = fopen("../data/Bin_remove.txt",    "w");
-  FILE *stream_AVL_insert    = fopen("../data/AVL_insert.txt",    "w");
+  FILE *stream_Skip_insert    = fopen("../data/skip_insert.txt",    "w");
+  FILE *stream_Skip_remove    = fopen("../data/skip_remove.txt",    "w");
+  FILE *stream_Bin_insert    = fopen("../data/bin_insert.txt",    "w");
+  FILE *stream_Bin_remove    = fopen("../data/bin_remove.txt",    "w");
+  FILE *stream_AVL_insert    = fopen("../data/avl_insert.txt",    "w");
+  FILE *stream_AVL_remove    = fopen("../data/avl_remove.txt",    "w");
   FILE *stream_decart_insert = fopen("../data/decart_insert.txt", "w");
-  FILE *stream_splay_insert  = fopen("../data/splay_insert.txt",  "w");
-  FILE *stream_RBT_insert    = fopen("../data/RBT_insert.txt",    "w");
-  FILE *stream_AVL_remove    = fopen("../data/AVL_remove.txt",    "w");
   FILE *stream_decart_remove = fopen("../data/decart_remove.txt", "w");
+  FILE *stream_splay_insert  = fopen("../data/splay_insert.txt",  "w");
   FILE *stream_splay_remove  = fopen("../data/splay_remove.txt",  "w");
-  FILE *stream_RBT_remove    = fopen("../data/RBT_remove.txt",    "w");
+  FILE *stream_RBT_insert    = fopen("../data/rb_insert.txt",    "w");
+  FILE *stream_RBT_remove    = fopen("../data/rb_remove.txt",    "w");
   double time_insert[AMOUNT_TEST][COUNT_HASH_TABLE] = {};
   double time_remove[AMOUNT_TEST][COUNT_HASH_TABLE] = {};
 

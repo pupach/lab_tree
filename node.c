@@ -2,7 +2,7 @@
 // Created by pupach on 21.04.24.
 //
 
-#include "ElemTree.h"
+#include "node.h"
 
 ElemTree *GetParent(ElemTree *elem)
 {

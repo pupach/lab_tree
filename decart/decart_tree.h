@@ -18,7 +18,7 @@
 
 
 
-#include "ElemTree.h"
+#include "..\node.h"
 
 ElemTree *InsertDecart(ElemTree *tree, ElemTree * val);
 ElemTree *DeleteDecart(ElemTree *tree, int val);

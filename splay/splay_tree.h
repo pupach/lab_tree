@@ -9,7 +9,7 @@
 #include <stdbool.h>
 #include <string.h>
 #include <assert.h>
-#include "ElemTree.h"
+#include "..\node.h"
 
 
 #define PowerUniverse 2147483647

@@ -1,4 +1,4 @@
-#include "Decartach.h"
+#include "decart_tree.h"
 int deep = 0;
 
 void SetHigh1Decartch(ElemTree *head)

@@ -28,8 +28,8 @@ def gen_graphs(fileNames, title):
     plt.ylabel(units)
     plt.savefig(graphDir + title)
 
-gen_graphs(["AVL_remove", "decart_remove", "splay_remove", "RBT_remove", "Skip_remove"], "remove")
+gen_graphs(["avl_remove", "decart_remove", "splay_remove", "rb_remove", "skip_remove"], "remove")
 
 plt.cla()
 
-gen_graphs(["AVL_insert", "decart_insert", "splay_insert", "RBT_insert", "Skip_insert"], "insert")
+gen_graphs(["avl_insert", "decart_insert", "splay_insert", "rb_insert", "skip_insert"], "insert")

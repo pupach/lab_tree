@@ -1,4 +1,4 @@
-#include "RedBlackTree.h"
+#include "rb_tree.h"
 
 void RightRotateRBT(ElemRBT *head)
 {

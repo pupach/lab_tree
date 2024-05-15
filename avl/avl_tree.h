@@ -5,7 +5,7 @@
 #ifndef LAB_TREE_AVL_TREE_H
 #define LAB_TREE_AVL_TREE_H
 
-#include "ElemTree.h"
+#include "..\node.h"
 #include <stdlib.h>
 #include <stdbool.h>
 #include <string.h>
@@ -21,7 +21,6 @@
 
 typedef struct{
     ElemTree *head;
-
 }AvlTree;
 
 void InsertAvl(AvlTree *tree, ElemTree *ElemToIns);

@@ -1,4 +1,4 @@
-#include "Splay_tree.h"
+#include "splay_tree.h"
 
 void LeftRotateSplay(ElemTree *head)
 {
