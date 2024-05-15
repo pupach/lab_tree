@@ -3,7 +3,7 @@ project(lab_hash)
 
 set(CMAKE_C_STANDARD 17)
 
-SET(CMAKE_EXE_LINKER_FLAGS  "-fsanitize=address -lm")
+#SET(CMAKE_EXE_LINKER_FLAGS  "-fsanitize=address -lm")
 
 
 execute_process(COMMAND mkdir -p data)
