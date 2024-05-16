@@ -8,10 +8,9 @@
 #include "b\b_tree.h"
 
 typedef struct{
-    clock_t Insert;
-    clock_t Remove;
-
-}TestTimeOne;
+  clock_t Insert;
+  clock_t Remove;
+} TestTimeOne;
 
 typedef struct{
   TestTimeOne Avl;
@@ -21,11 +20,9 @@ typedef struct{
   TestTimeOne RBT;
   TestTimeOne Skip;
   TestTimeOne Btree;
+} TestTimeAll;
 
-}TestTimeAll;
-
-
-TestTimeAll DoTest(int size, int max_size)
+TestTimeAll do_test(int size, int max_size)
 {
   TestTimeAll ret = {};
 
@@ -192,9 +189,12 @@ TestTimeAll DoTest(int size, int max_size)
 
 int main() {
   TestTimeAll time;
-  FILE *stream_BTree_insert    = fopen("../data/BTree_insert.txt",    "w");
-  FILE *stream_Skip_insert    = fopen("../data/skip_insert.txt",    "w");
-  FILE *stream_Skip_remove    = fopen("../data/skip_remove.txt",    "w");
+  double time_insert[AMOUNT_TEST][COUNT_HASH_TABLE] = {};
+  double time_remove[AMOUNT_TEST][COUNT_HASH_TABLE] = {};
+
+  FILE *stream_BTree_insert  = fopen("../data/BTree_insert.txt",  "w");
+  FILE *stream_Skip_insert   = fopen("../data/skip_insert.txt",   "w");
+  FILE *stream_Skip_remove   = fopen("../data/skip_remove.txt",   "w");
   FILE *stream_Bin_insert    = fopen("../data/bin_insert.txt",    "w");
   FILE *stream_Bin_remove    = fopen("../data/bin_remove.txt",    "w");
   FILE *stream_AVL_insert    = fopen("../data/avl_insert.txt",    "w");
@@ -203,17 +203,15 @@ int main() {
   FILE *stream_decart_remove = fopen("../data/decart_remove.txt", "w");
   FILE *stream_splay_insert  = fopen("../data/splay_insert.txt",  "w");
   FILE *stream_splay_remove  = fopen("../data/splay_remove.txt",  "w");
-  FILE *stream_RBT_insert    = fopen("../data/rb_insert.txt",    "w");
-  FILE *stream_RBT_remove    = fopen("../data/rb_remove.txt",    "w");
-  double time_insert[AMOUNT_TEST][COUNT_HASH_TABLE] = {};
-  double time_remove[AMOUNT_TEST][COUNT_HASH_TABLE] = {};
+  FILE *stream_RBT_insert    = fopen("../data/rb_insert.txt",     "w");
+  FILE *stream_RBT_remove    = fopen("../data/rb_remove.txt",     "w");
 
   for(int i = 1; i < AMOUNT_TEST + 1; i ++)
   {
     for(int j = 0; j < AMOUNT_TRY; j++)
     {
       fprintf(stderr, "i*j = %d\n", 3*i - 3 + j );
-      time = DoTest(i * 100000, 10000000);
+      time = do_test(i * 100000, 10000000);
 
       time_insert[i - 1][0] += (double) time.Avl.Insert / AMOUNT_TRY / CLOCKS_PER_SEC;
       time_remove[i - 1][0] += (double) time.Avl.Remove / AMOUNT_TRY / CLOCKS_PER_SEC;
@@ -237,26 +235,25 @@ int main() {
 
     }
   }
-  fprintf(stderr, "Before\n");
 
   for(int i = 0; i < AMOUNT_TEST; i++)
   {
-    fprintf(stream_AVL_insert, "%d,%lf\n", (100000 * (i + 1)), time_insert[i][0]);
+    fprintf(stream_AVL_insert, "%d,%lf\n",    (100000 * (i + 1)), time_insert[i][0]);
     fprintf(stream_decart_insert, "%d,%lf\n", (100000 * (i + 1)), time_insert[i][1]);
-    fprintf(stream_splay_insert, "%d,%lf\n", (100000 * (i + 1)), time_insert[i][2]);
-    fprintf(stream_RBT_insert, "%d,%lf\n", (100000 * (i + 1)), time_insert[i][3]);
-    fprintf(stream_Skip_insert, "%d,%lf\n", (100000 * (i + 1)), time_insert[i][4]);
-    fprintf(stream_Bin_insert, "%d,%lf\n", (100000 * (i + 1)), time_insert[i][5]);
-    fprintf(stream_BTree_insert, "%d,%lf\n", (100000 * (i + 1)), time_insert[i][6]);
+    fprintf(stream_splay_insert, "%d,%lf\n",  (100000 * (i + 1)), time_insert[i][2]);
+    fprintf(stream_RBT_insert, "%d,%lf\n",    (100000 * (i + 1)), time_insert[i][3]);
+    fprintf(stream_Skip_insert, "%d,%lf\n",   (100000 * (i + 1)), time_insert[i][4]);
+    fprintf(stream_Bin_insert, "%d,%lf\n",    (100000 * (i + 1)), time_insert[i][5]);
+    fprintf(stream_BTree_insert, "%d,%lf\n",  (100000 * (i + 1)), time_insert[i][6]);
   }
 
   for(int i = 0; i < AMOUNT_TEST; i++)
   {
-    fprintf(stream_AVL_remove, "%d,%lf\n", (100000 * (i + 1) / 2), time_remove[i][0]);
+    fprintf(stream_AVL_remove, "%d,%lf\n",    (100000 * (i + 1) / 2), time_remove[i][0]);
     fprintf(stream_decart_remove, "%d,%lf\n", (100000 * (i + 1) / 2), time_remove[i][1]);
     fprintf(stream_splay_remove, "%d,%lf\n",  (100000 * (i + 1) / 2), time_remove[i][2]);
     fprintf(stream_RBT_remove, "%d,%lf\n",    (100000 * (i + 1) / 2), time_remove[i][3]);
-    fprintf(stream_Skip_remove, "%d,%lf\n",    (100000 * (i + 1) / 2), time_remove[i][4]);
+    fprintf(stream_Skip_remove, "%d,%lf\n",   (100000 * (i + 1) / 2), time_remove[i][4]);
     fprintf(stream_Bin_remove, "%d,%lf\n",    (100000 * (i + 1) / 2), time_remove[i][5]);
   }
 
@@ -273,6 +270,7 @@ int main() {
   fclose(stream_splay_insert);
   fclose(stream_RBT_insert);
   fclose(stream_BTree_insert);
+
   return 0;
 }
 
