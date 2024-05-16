@@ -1,6 +1,6 @@
 #include "avl_tree.h"
 
-ElemTree *FindPlaceInTree(ElemTree *CurEl, int val)
+node *FindPlaceInTree(node *CurEl, int val)
 {
 
   if(CurEl == NULL)   return NULL;
@@ -24,11 +24,11 @@ ElemTree *FindPlaceInTree(ElemTree *CurEl, int val)
   }
 }
 
-void SetHigh1(ElemTree *head)
+void SetHigh1(node *head)
 {
   if(head == NULL)  return;
-  ElemTree *left_tree = head->left;
-  ElemTree *right_tree = head->right;
+  node *left_tree = head->left;
+  node *right_tree = head->right;
   if(right_tree == NULL)
   {
     if(left_tree != NULL) {
@@ -51,10 +51,10 @@ void SetHigh1(ElemTree *head)
   }
 }
 
-void SetHigh(ElemTree *head)
+void SetHigh(node *head)
 {
   if(head == NULL) return;
-  ElemTree *prev;
+  node *prev;
 
   SetHigh1(head);
 
@@ -66,23 +66,23 @@ void SetHigh(ElemTree *head)
   }
 }
 
-void LeftBigRotate(ElemTree *head) {
-  RightRotate(head->left);
+void LeftBigRotate(node *head) {
+  rotate_right(head->left);
 
-  LeftRotate(head);
+  rotate_left(head);
 }
 
-void RightBigRotate(ElemTree *head) {
-  LeftRotate(head->right);
+void RightBigRotate(node *head) {
+  rotate_left(head->right);
 
-  RightRotate(head);
+  rotate_right(head);
 }
 
-ElemTree *UpdateDeepTree(ElemTree *ElemToUpd)
+node *UpdateDeepTree(node *ElemToUpd)
 {
   if(ElemToUpd == NULL) return NULL;
   SetHigh(ElemToUpd);
-  ElemTree *to_rotate, *may, *k;
+  node *to_rotate, *may, *k;
   int deep_may, deep_k;
 
   if(ElemToUpd->delta > 1)
@@ -108,7 +108,7 @@ ElemTree *UpdateDeepTree(ElemTree *ElemToUpd)
         else  return ElemToUpd;
       }
     }
-    LeftRotate(ElemToUpd);
+    rotate_left(ElemToUpd);
     SetHigh(ElemToUpd);
   }
   else if(ElemToUpd->delta < -1)
@@ -134,7 +134,7 @@ ElemTree *UpdateDeepTree(ElemTree *ElemToUpd)
         else  return ElemToUpd;
       }
     }
-    RightRotate(ElemToUpd);
+    rotate_right(ElemToUpd);
     SetHigh(ElemToUpd);
   }
   LOG("UpdateDeepTree cur_el = %d deep = %d delta_deep = %d]\n", ElemToUpd->val, ElemToUpd->deep, ElemToUpd->delta);
@@ -143,7 +143,7 @@ ElemTree *UpdateDeepTree(ElemTree *ElemToUpd)
   else  return ElemToUpd;
 }
 
-void InsertAvl(AvlTree *tree, ElemTree *ElemToIns)
+void InsertAvl(AvlTree *tree, node *ElemToIns)
 {
   if(tree->head == NULL)
   {
@@ -152,7 +152,7 @@ void InsertAvl(AvlTree *tree, ElemTree *ElemToIns)
     UpdateDeepTree(tree->head);
     return;
   }
-  ElemTree *ptr = FindPlaceInTree(tree->head, ElemToIns->val);
+  node *ptr = FindPlaceInTree(tree->head, ElemToIns->val);
 
   if(ElemToIns->val == ptr->val)
   {
@@ -171,14 +171,14 @@ void InsertAvl(AvlTree *tree, ElemTree *ElemToIns)
   ElemToIns->prev = ptr;
   ElemToIns->deep = 1;
   tree->head = UpdateDeepTree(ElemToIns->prev);
-  ElemTree  *prev = ElemToIns->prev;
+  node  *prev = ElemToIns->prev;
 }
 
 
 int FindMinElAvl(AvlTree *tree, int ogr)
 {
   int res = -1;
-  ElemTree *cur_el = tree->head;
+  node *cur_el = tree->head;
   while(cur_el != NULL)
   {
     if(cur_el->val >= ogr)
@@ -197,41 +197,41 @@ int FindMinElAvl(AvlTree *tree, int ogr)
 /*
 void RemoveAvl(AvlTree *avl, int key)
 {
-  ElemTree *key_node = FindPlaceInTree(avl->head, key);
+  node *key_node = FindPlaceInTree(avl->head, key);
   if ((key_node == NULL) || (key_node->val != key)) return;
 
-  ElemTree *left_child = key_node->left;
-  ElemTree *right_child = key_node->right;
+  node *left_child = key_node->left;
+  node *right_child = key_node->right;
 
 
   if (right_child == NULL)
   {
     if(left_child == NULL)
     {
-      if(GetParent(key_node) == NULL) avl->head = NULL;
-      else if(GetParent(key_node)->left == key_node)   GetParent(key_node)->left = NULL;
-      else  GetParent(key_node)->right = NULL;
+      if(parent_get(key_node) == NULL) avl->head = NULL;
+      else if(parent_get(key_node)->left == key_node)   parent_get(key_node)->left = NULL;
+      else  parent_get(key_node)->right = NULL;
 
-      avl->head = UpdateDeepTree(GetParent(key_node));
+      avl->head = UpdateDeepTree(parent_get(key_node));
       key_node->prev = NULL;
     }
 
     else
     {
-      ElemTree *replace_node_key = FindPlaceInTree(left_child, key_node->val);
+      node *replace_node_key = FindPlaceInTree(left_child, key_node->val);
 
-      ElemTree *to_update_deep = GetParent(replace_node_key);
+      node *to_update_deep = parent_get(replace_node_key);
       if(to_update_deep == key_node) to_update_deep = left_child;
 
-      if(GetParent(replace_node_key)->left == replace_node_key)   GetParent(replace_node_key)->left = NULL;
-      else  GetParent(replace_node_key)->right = NULL;
+      if(parent_get(replace_node_key)->left == replace_node_key)   parent_get(replace_node_key)->left = NULL;
+      else  parent_get(replace_node_key)->right = NULL;
 
 
-      replace_node_key->prev = GetParent(key_node);
+      replace_node_key->prev = parent_get(key_node);
 
-      if(GetParent(key_node) != NULL) {
-        if (GetParent(key_node)->left == key_node) GetParent(key_node)->left = replace_node_key;
-        else GetParent(key_node)->right = replace_node_key;
+      if(parent_get(key_node) != NULL) {
+        if (parent_get(key_node)->left == key_node) parent_get(key_node)->left = replace_node_key;
+        else parent_get(key_node)->right = replace_node_key;
       }
 
       if(key_node->left != replace_node_key) replace_node_key->left = key_node->left;
@@ -239,8 +239,8 @@ void RemoveAvl(AvlTree *avl, int key)
 
       replace_node_key->right = key_node->right;
 
-      if(left_child != replace_node_key) SetParent(left_child, replace_node_key);
-      SetParent(right_child, replace_node_key);
+      if(left_child != replace_node_key) parent_set(left_child, replace_node_key);
+      parent_set(right_child, replace_node_key);
 
       avl->head = UpdateDeepTree(to_update_deep);
       key_node->prev = NULL;
@@ -249,20 +249,20 @@ void RemoveAvl(AvlTree *avl, int key)
 
   else
   {
-    ElemTree *replace_node_key = FindPlaceInTree(right_child, key);
+    node *replace_node_key = FindPlaceInTree(right_child, key);
 
-    ElemTree *to_update_deep = GetParent(replace_node_key);
+    node *to_update_deep = parent_get(replace_node_key);
     if(to_update_deep == key_node) to_update_deep = right_child;
 
-    if(GetParent(replace_node_key)->left == replace_node_key)   GetParent(replace_node_key)->left = NULL;
-    else  GetParent(replace_node_key)->right = NULL;
+    if(parent_get(replace_node_key)->left == replace_node_key)   parent_get(replace_node_key)->left = NULL;
+    else  parent_get(replace_node_key)->right = NULL;
 
 
-    replace_node_key->prev = GetParent(key_node);
+    replace_node_key->prev = parent_get(key_node);
 
-    if(GetParent(key_node) != NULL) {
-      if (GetParent(key_node)->left == key_node) GetParent(key_node)->left = replace_node_key;
-      else GetParent(key_node)->right = replace_node_key;
+    if(parent_get(key_node) != NULL) {
+      if (parent_get(key_node)->left == key_node) parent_get(key_node)->left = replace_node_key;
+      else parent_get(key_node)->right = replace_node_key;
     }
 
     if(key_node->right != replace_node_key) replace_node_key->right = key_node->right;
@@ -271,8 +271,8 @@ void RemoveAvl(AvlTree *avl, int key)
     replace_node_key->left = key_node->left;
 
 
-    if(right_child != replace_node_key) SetParent(right_child, replace_node_key);
-    SetParent(left_child, replace_node_key);
+    if(right_child != replace_node_key) parent_set(right_child, replace_node_key);
+    parent_set(left_child, replace_node_key);
 
     avl->head = UpdateDeepTree(to_update_deep);
     key_node->prev = NULL;
@@ -287,11 +287,11 @@ void RemoveAvl(AvlTree *avl, int key)
     ((a) > (b) ? (a) : (b))
 
 
-static int avlGetDiff(ElemTree *avl)
+static int avlGetDiff(node *avl)
 {
   if (!avl) return 0;
-  ElemTree *left = avl->left;
-  ElemTree *right = avl->right;
+  node *left = avl->left;
+  node *right = avl->right;
   if(!left && !right) return 0;
   if(!left) return -right->deep;
   if(!right) return left->deep;
@@ -299,30 +299,30 @@ static int avlGetDiff(ElemTree *avl)
   return left->deep - right->deep;
 }
 
-static void avlUpdateHeight(ElemTree *avl)
+static void avlUpdateHeight(node *avl)
 {
   if (!avl) return;
 
-  ElemTree *left = avl->left;
-  ElemTree *right = avl->right;
+  node *left = avl->left;
+  node *right = avl->right;
   if(!left && !right) avl->deep = 1;
   else if(!left)  avl->deep = right->deep;
   else if(!right) avl->deep = left->deep;
   else  avl->deep = max(left->deep, right->deep);
 }
 
-static ElemTree *avlRotateLL(ElemTree *avl)
+static node *avlRotateLL(node *avl)
 {
   if (!avl) return NULL;
 
-  ElemTree *parent = avl->prev;
-  ElemTree *RChild = avl->right;
+  node *parent = avl->prev;
+  node *RChild = avl->right;
 
   avl->right = RChild->left;
-  if (avl->right) SetParent(RChild->right, avl);
+  if (avl->right) parent_set(RChild->right, avl);
 
   RChild->left         = avl;
-  SetParent(RChild->left, RChild);
+  parent_set(RChild->left, RChild);
 
   RChild->prev = parent;
 
@@ -332,18 +332,18 @@ static ElemTree *avlRotateLL(ElemTree *avl)
   return RChild;
 }
 
-static ElemTree *avlRotateRR(ElemTree *avl)
+static node *avlRotateRR(node *avl)
 {
   if (!avl) return NULL;
 
-  ElemTree *parent = avl->prev;
-  ElemTree *LChild = avl->left;
+  node *parent = avl->prev;
+  node *LChild = avl->left;
 
   avl->left = LChild->right;
-  if (avl->left) SetParent(LChild->left, avl);
+  if (avl->left) parent_set(LChild->left, avl);
 
   LChild->right         = avl;
-  SetParent(LChild->right, LChild);
+  parent_set(LChild->right, LChild);
 
   LChild->prev = parent;
 
@@ -353,25 +353,25 @@ static ElemTree *avlRotateRR(ElemTree *avl)
   return LChild;
 }
 
-static ElemTree *avlRotateLR(ElemTree *avl)
+static node *avlRotateLR(node *avl)
 {
   avl->left = avlRotateLL(avl->left);
-  SetParent(avl->left, avl);
+  parent_set(avl->left, avl);
   avl       = avlRotateRR(avl);
 
   return avl;
 }
 
-static ElemTree *avlRotateRL(ElemTree *avl)
+static node *avlRotateRL(node *avl)
 {
   avl->right = avlRotateRR(avl->right);
-  SetParent(avl->right, avl);
+  parent_set(avl->right, avl);
   avl        = avlRotateLL(avl);
 
   return avl;
 }
 
-static ElemTree *avlRebalance(ElemTree *avl)
+static node *avlRebalance(node *avl)
 {
   if (!avl) return NULL;
 
@@ -397,17 +397,17 @@ static ElemTree *avlRebalance(ElemTree *avl)
 
 
 
-ElemTree *AvlRemove(ElemTree *avl, int key)
+node *AvlRemove(node *avl, int key)
 {
-  ElemTree *parent  = NULL;
+  node *parent  = NULL;
   if(avl == NULL) return avl;
 
-  ElemTree *keyNode = FindPlaceInTree(avl, key);
+  node *keyNode = FindPlaceInTree(avl, key);
   if (keyNode->val != key) return avl;
 
   parent = keyNode->prev;
-  ElemTree *LChild = keyNode->left;
-  ElemTree *RChild = keyNode->right;
+  node *LChild = keyNode->left;
+  node *RChild = keyNode->right;
 
   if (!RChild)
   {
@@ -420,7 +420,7 @@ ElemTree *AvlRemove(ElemTree *avl, int key)
 
   else
   {
-    ElemTree *change   = FindPlaceInTree(RChild, key);
+    node *change   = FindPlaceInTree(RChild, key);
     int changedKey = change->val;
 
     AvlRemove(RChild, changedKey);
@@ -429,14 +429,14 @@ ElemTree *AvlRemove(ElemTree *avl, int key)
     parent = keyNode;
   }
 
-  ElemTree *cur = parent;
+  node *cur = parent;
   avlUpdateHeight(cur);
   while (avlGetDiff(cur) != 0)
   {
     cur = avlRebalance(cur);
     if (!cur->prev) return cur;
 
-    ElemTree *curParent = cur->prev;
+    node *curParent = cur->prev;
     if (cur->val < curParent->val) curParent->left  = cur;
     else                           curParent->right = cur;
 

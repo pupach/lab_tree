@@ -1,18 +1,18 @@
 #include "decart_tree.h"
 int deep = 0;
 
-void SetHigh1Decartch(ElemTree *head)
+void SetHigh1Decartch(node *head)
 {
   if(head == NULL)  return;
-  ElemTree *left_tree = head->left;
-  ElemTree *right_tree = head->right;
+  node *left_tree = head->left;
+  node *right_tree = head->right;
   if((right_tree == NULL) && (left_tree == NULL)) head->size = 1;
   else if(left_tree == NULL)                      head->size = right_tree->size + 1;
   else if(right_tree == NULL)                     head->size = left_tree->size + 1;
   else                                            head->size = left_tree->size + right_tree->size + 1;
 }
 
-void SetHighDecartch(ElemTree *head)
+void SetHighDecartch(node *head)
 {
   deep++;
   //if(deep == 1000000)  exit(-1);
@@ -23,7 +23,7 @@ void SetHighDecartch(ElemTree *head)
   SetHigh1Decartch(head);
 }
 
-SlicersTree SliceDecart(ElemTree *head, int val_to_slice)
+SlicersTree SliceDecart(node *head, int val_to_slice)
 {
   deep++;
 
@@ -55,7 +55,7 @@ SlicersTree SliceDecart(ElemTree *head, int val_to_slice)
   return to_ret;
 }
 
-ElemTree *MergeDecart(ElemTree *min, ElemTree *max)
+node *MergeDecart(node *min, node *max)
 {
   deep++;
   //if(deep == 1000000)  exit(-1);
@@ -63,7 +63,7 @@ ElemTree *MergeDecart(ElemTree *min, ElemTree *max)
   if((min == NULL) && (max == NULL))  return NULL;
   else if(min == NULL)                return max;
   else if(max == NULL)                return min;
-  ElemTree *head, *another;
+  node *head, *another;
 
   if(min->priorety > max->priorety)
   {
@@ -87,15 +87,15 @@ ElemTree *MergeDecart(ElemTree *min, ElemTree *max)
 }
 
 
-ElemTree *InsertDecart(ElemTree *tree, ElemTree * val)
+node *InsertDecart(node *tree, node * val)
 {
   SlicersTree res = SliceDecart(tree, val->val);
-  ElemTree *new_min = MergeDecart(res.min, val);
+  node *new_min = MergeDecart(res.min, val);
   tree = MergeDecart(new_min, res.max);
   return tree;
 }
 
-ElemTree *RemoveDecart(ElemTree *head, int elem)
+node *RemoveDecart(node *head, int elem)
 {
   SlicersTree res = SliceDecart(head, elem);
 
@@ -104,8 +104,8 @@ ElemTree *RemoveDecart(ElemTree *head, int elem)
   if(res.max->val == elem)  return head;
   else
   {
-    SetParent(res.max->left, NULL);
-    SetParent(res.max->right, NULL);
+    parent_set(res.max->left, NULL);
+    parent_set(res.max->right, NULL);
     res.max = MergeDecart(res.max->left, res.max->right);
 
     return MergeDecart(res.max, res.min);

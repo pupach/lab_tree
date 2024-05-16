@@ -2,41 +2,37 @@
 // Created by pupach on 21.04.24.
 //
 
-#ifndef LAB_TREE_ELEMTREE_H
-#define LAB_TREE_ELEMTREE_H
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdbool.h>
-#include <string.h>
+#ifndef LAB_TREE_node_H
+#define LAB_TREE_node_H
 #define LOG(args...) \
     //fprintf(stderr, args)
 
-extern struct ElemTree;
+extern struct node;
 
 typedef struct
 {
-    struct ElemTree *prev;
+    struct node *prev;
     int val;
     int deep;
     int delta;
     int size;
     int priorety;
-    struct ElemTree* right;
-    struct ElemTree* left;
-}ElemTree;
+    struct node* right;
+    struct node* left;
+}node;
 
 typedef struct{
-    ElemTree *min;
-    ElemTree *max;
+    node *min;
+    node *max;
 }SlicersTree;
 
-ElemTree *GetParent(ElemTree *elem);
+node *parent_get(node *elem);
 
-void SetParent(ElemTree *elem, ElemTree *parent);
+void parent_set(node *elem, node *parent);
 
-void RightRotate(ElemTree *head);
+void rotate_right(node *head);
 
-void LeftRotate(ElemTree *head);
+void rotate_left(node *head);
 
 
-#endif //LAB_TREE_ELEMTREE_H
+#endif //LAB_TREE_node_H

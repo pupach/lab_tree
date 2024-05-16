@@ -1,11 +1,11 @@
 #include "splay_tree.h"
 
-void LeftRotateSplay(ElemTree *head)
+void rotate_leftSplay(node *head)
 {
-  ElemTree *another, *another_prev_head;
-  ElemTree *to_rotate = head->right;
-  ElemTree *prev_head = head->prev;
-  ElemTree *to_change = NULL;
+  node *another, *another_prev_head;
+  node *to_rotate = head->right;
+  node *prev_head = head->prev;
+  node *to_change = NULL;
   if(to_rotate != NULL )    to_change = to_rotate->left;
 
 
@@ -31,12 +31,12 @@ void LeftRotateSplay(ElemTree *head)
 
 }
 
-void RightRotateSplay(ElemTree *head)
+void rotate_rightSplay(node *head)
 {
-  ElemTree *another, *another_prev_head;
-  ElemTree *to_rotate = head->left;
-  ElemTree *prev_head = head->prev;
-  ElemTree *to_change = NULL;
+  node *another, *another_prev_head;
+  node *to_rotate = head->left;
+  node *prev_head = head->prev;
+  node *to_change = NULL;
   if(to_rotate != NULL )    to_change = to_rotate->right;
 
   if(head->prev != NULL)
@@ -61,20 +61,20 @@ void RightRotateSplay(ElemTree *head)
 }
 
 
-ElemTree *Zig(ElemTree *head)
+node *Zig(node *head)
 {
-  ElemTree *father      = GetParent(head);
-  ElemTree *grandfather = GetParent(father);
+  node *father      = parent_get(head);
+  node *grandfather = parent_get(father);
   if(father == NULL)  return head;
   else if(grandfather == NULL)
   {
     if(father->left == head)
     {
-      RightRotateSplay(father);
+      rotate_rightSplay(father);
     }
     else if(father->right == head)
     {
-      LeftRotateSplay(father);
+      rotate_leftSplay(father);
     }
     else
     {
@@ -83,23 +83,23 @@ ElemTree *Zig(ElemTree *head)
   }
   else if((grandfather->left == father) && (father->left == head))
   {
-    RightRotateSplay(grandfather);
-    RightRotateSplay(father);
+    rotate_rightSplay(grandfather);
+    rotate_rightSplay(father);
   }
   else if((grandfather->right == father) && (father->right == head))
   {
-    LeftRotateSplay(grandfather);
-    LeftRotateSplay(father);
+    rotate_leftSplay(grandfather);
+    rotate_leftSplay(father);
   }
   else if((grandfather->left == father) && (father->right == head))
   {
-    LeftRotateSplay(father);
-    RightRotateSplay(grandfather);
+    rotate_leftSplay(father);
+    rotate_rightSplay(grandfather);
   }
   else if((grandfather->right == father) && (father->left == head))
   {
-    RightRotateSplay(father);
-    LeftRotateSplay(grandfather);
+    rotate_rightSplay(father);
+    rotate_leftSplay(grandfather);
   }
   else
   {
@@ -108,7 +108,7 @@ ElemTree *Zig(ElemTree *head)
   return head;
 }
 
-ElemTree *Splay(ElemTree *elem)
+node *Splay(node *elem)
 {
   while(elem->prev != NULL)
   {
@@ -118,13 +118,13 @@ ElemTree *Splay(ElemTree *elem)
 }
 
 
-int CmpTreeElem(ElemTree *f, int val)
+int CmpTreeElem(node *f, int val)
 {
   return f->val - val;
 }
 
 
-ElemTree *FindMinElSplay(ElemTree *tree, int elem)
+node *FindMinElSplay(node *tree, int elem)
 {
   if(tree == NULL)  return NULL;
 
@@ -147,7 +147,7 @@ ElemTree *FindMinElSplay(ElemTree *tree, int elem)
   }
 }
 
-SlicersTree Split(ElemTree *tree, int elem)
+SlicersTree Split(node *tree, int elem)
 {
   SlicersTree ret = {};
   if(tree == NULL)  return ret;
@@ -157,14 +157,14 @@ SlicersTree Split(ElemTree *tree, int elem)
 
   if((CmpTreeElem(tree, elem) > 0))
   {
-    SetParent(tree->left, NULL);
+    parent_set(tree->left, NULL);
     ret.min = tree->left;
     ret.max = tree;
     tree->left = NULL;
     return ret;
   }
   else{
-      SetParent(tree->right, NULL);
+      parent_set(tree->right, NULL);
 
         ret.max = tree->right;
         ret.min = tree;
@@ -173,40 +173,40 @@ SlicersTree Split(ElemTree *tree, int elem)
   }
 }
 
-ElemTree *InsertSplay(ElemTree *tree, ElemTree *ElemToIns)
+node *InsertSplay(node *tree, node *ElemToIns)
 {
   SlicersTree ret = Split(tree, ElemToIns->val);
   if(tree != NULL) {
       LOG("tree.val = %d ElemToIns.val = %d\n ret.min = %p ret.max = %p\n", tree->val, ElemToIns->val, ret.min, ret.max);
   }
 
-  SetParent(ret.min, ElemToIns);
-  SetParent(ret.max, ElemToIns);
+  parent_set(ret.min, ElemToIns);
+  parent_set(ret.max, ElemToIns);
   ElemToIns->left = ret.min;
   ElemToIns->right = ret.max;
 
   return ElemToIns;
 }
 
-ElemTree *Merge(ElemTree *left, ElemTree *right)
+node *Merge(node *left, node *right)
 {
   if(left == NULL)  return  right;
   if(right == NULL) return  left;
 
   right = FindMinElSplay(right, left->val);
   right->left = left;
-  SetParent(left, right);
+  parent_set(left, right);
   return right;
 }
 
-ElemTree *RemoveSPlay(ElemTree *head, int elem)
+node *RemoveSPlay(node *head, int elem)
 {
   head = FindMinElSplay(head, elem);
   if(CmpTreeElem(head, elem) != 0)  return head;
   else
   {
-    SetParent(head->left, NULL);
-    SetParent(head->right, NULL);
+    parent_set(head->left, NULL);
+    parent_set(head->right, NULL);
 
     return Merge(head->left, head->right);
   }

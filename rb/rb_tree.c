@@ -1,6 +1,6 @@
 #include "rb_tree.h"
 
-void RightRotateRBT(ElemRBT *head)
+void rotate_rightRBT(ElemRBT *head)
 {
     ElemRBT *another, *another_prev_head;
     ElemRBT *to_rotate = head->right;
@@ -30,7 +30,7 @@ void RightRotateRBT(ElemRBT *head)
     head->right = to_change;
 }
 
-void LeftRotateRBT(ElemRBT *head)
+void rotate_leftRBT(ElemRBT *head)
 {
     ElemRBT *another, *another_prev_head;
     ElemRBT *to_rotate = head->left;
@@ -66,7 +66,7 @@ bool GetRedRBT(ElemRBT *elem) {
   return elem->red;
 }
 
-ElemRBT *GetParentRBT(ElemRBT *elem)
+ElemRBT *parent_getRBT(ElemRBT *elem)
 {
     if(elem == NULL) return  NULL;
     return elem->prev;
@@ -79,7 +79,7 @@ void RevertClour(ElemRBT *elem)
   if(elem != NULL)  elem->red = !(elem->red);
 }
 
-void SetParentRBT(ElemRBT *elem, ElemRBT *parent)
+void parent_setRBT(ElemRBT *elem, ElemRBT *parent)
 {
     if(elem == NULL) return ;
     elem->prev = parent;
@@ -87,7 +87,7 @@ void SetParentRBT(ElemRBT *elem, ElemRBT *parent)
 
 ElemRBT *FindUncle(ElemRBT *child)
 {
-  ElemRBT *grfath = GetParentRBT(child->prev);
+  ElemRBT *grfath = parent_getRBT(child->prev);
   if(grfath == NULL)  return NULL;
 
   if(grfath->left == child->prev) return grfath->right;
@@ -121,7 +121,7 @@ ElemRBT *BalanceColour(ElemRBT *head)
       head->red = 0;
       return head;
   }
-  else if(GetParentRBT(head)->red == 0)
+  else if(parent_getRBT(head)->red == 0)
   {
       head->red = 0;
       return NULL;
@@ -130,9 +130,9 @@ ElemRBT *BalanceColour(ElemRBT *head)
   {
     uncle = FindUncle(head);
 
-    father = GetParentRBT(head);
+    father = parent_getRBT(head);
 
-    grandfather = GetParentRBT(father);
+    grandfather = parent_getRBT(father);
     bool chvet = GetRedRBT(uncle);
 
     if(chvet == 1)
@@ -144,21 +144,21 @@ ElemRBT *BalanceColour(ElemRBT *head)
     }
     else
     {
-      if(GetParentRBT(head)->right == father)
+      if(parent_getRBT(head)->right == father)
       {
         if(father->left == head)
         {
-          LeftRotateRBT(father);
+          rotate_leftRBT(father);
         }
-        RightRotateRBT(GetParentRBT(father));
+        rotate_rightRBT(parent_getRBT(father));
       }
       else
       {
         if(father->right == head)
         {
-          RightRotateRBT(father);
+          rotate_rightRBT(father);
         }
-        LeftRotateRBT(GetParentRBT(father));
+        rotate_leftRBT(parent_getRBT(father));
       }
       RevertClour(father);
       RevertClour(grandfather);
@@ -204,23 +204,23 @@ void BalanceColourRemove(ElemRBT *head)
   }
   else
   {
-    father =  GetParentRBT(head);
+    father =  parent_getRBT(head);
 
     if(GetRedRBT(father->left) == 1)
     {
       brother = father->left;
-      LeftRotateRBT(father);
+      rotate_leftRBT(father);
       RevertClour(father);
       RevertClour(brother);
-      //LeftRotateRBT(father);
+      //rotate_leftRBT(father);
     }
     else if(GetRedRBT(father->right) == 1)
     {
       brother = father->right;
-      //LeftRotateRBT(head->prev);
+      //rotate_leftRBT(head->prev);
       RevertClour(father);
       RevertClour(brother);
-      RightRotateRBT(father);
+      rotate_rightRBT(father);
     }
     else
     {
@@ -241,7 +241,7 @@ void BalanceColourRemove(ElemRBT *head)
       else if(father->right == brother)
       {
         if(GetRedRBT(brother->right) == 0) {
-          LeftRotateRBT(brother);
+          rotate_leftRBT(brother);
           RevertClour(brother);
           RevertClour(brother->left);
         }
@@ -251,13 +251,13 @@ void BalanceColourRemove(ElemRBT *head)
           father->red = 0;
           child = brother->right;
           child->red = 0;
-          RightRotateRBT(father);
+          rotate_rightRBT(father);
         }
       }
       else
       {
         if(GetRedRBT(brother->left) == 0) {
-          RightRotateRBT(brother);
+          rotate_rightRBT(brother);
           RevertClour(brother);
           RevertClour(brother->right);
         }
@@ -267,7 +267,7 @@ void BalanceColourRemove(ElemRBT *head)
           father->red = 0;
           child = brother->left;
           child->red = 0;
-          LeftRotateRBT(father);
+          rotate_leftRBT(father);
         }
       }
     }
@@ -281,27 +281,27 @@ ElemRBT *RemoveRBT(ElemRBT *head, int val)
 
   if((res->left == NULL) && (res->right == NULL))
   {
-    if(GetParentRBT(res)->left == res)  GetParentRBT(res)->left = NULL;
+    if(parent_getRBT(res)->left == res)  parent_getRBT(res)->left = NULL;
 
-    if(GetParentRBT(res)->right == res) GetParentRBT(res)->right = NULL;
+    if(parent_getRBT(res)->right == res) parent_getRBT(res)->right = NULL;
 
     if(res->red == 1) return head;
     BalanceColourRemove(res->prev);
   }
   else if(res->right == NULL)
   {
-      if(GetParentRBT(res) == NULL)
+      if(parent_getRBT(res) == NULL)
       {
-          SetParentRBT(res->left, GetParentRBT(res));
+          parent_setRBT(res->left, parent_getRBT(res));
       }
-    else if(GetParentRBT(res)->left == res) {
-      GetParentRBT(res)->left = res->left;
-      SetParentRBT(res->left, GetParentRBT(res));
+    else if(parent_getRBT(res)->left == res) {
+      parent_getRBT(res)->left = res->left;
+      parent_setRBT(res->left, parent_getRBT(res));
     }
 
-    else if(GetParentRBT(res)->right == res) {
-      GetParentRBT(res)->right = res->left;
-      SetParentRBT(res->left, GetParentRBT(res));
+    else if(parent_getRBT(res)->right == res) {
+      parent_getRBT(res)->right = res->left;
+      parent_setRBT(res->left, parent_getRBT(res));
     }
 
     if(res->red == 1) return head;
@@ -309,18 +309,18 @@ ElemRBT *RemoveRBT(ElemRBT *head, int val)
   }
   else if(res->left == NULL)
   {
-    if(GetParentRBT(res) == NULL)
+    if(parent_getRBT(res) == NULL)
     {
-      SetParentRBT(res->right, GetParentRBT(res));
+      parent_setRBT(res->right, parent_getRBT(res));
     }
-    else if(GetParentRBT(res)->left == res) {
-      GetParentRBT(res)->left = res->right;
-      SetParentRBT(res->right, GetParentRBT(res));
+    else if(parent_getRBT(res)->left == res) {
+      parent_getRBT(res)->left = res->right;
+      parent_setRBT(res->right, parent_getRBT(res));
     }
 
-    else if(GetParentRBT(res)->right == res) {
-      GetParentRBT(res)->right = res->right;
-      SetParentRBT(res->right, GetParentRBT(res));
+    else if(parent_getRBT(res)->right == res) {
+      parent_getRBT(res)->right = res->right;
+      parent_setRBT(res->right, parent_getRBT(res));
     }
 
     if(res->red == 1) return head;

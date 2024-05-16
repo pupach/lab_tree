@@ -21,8 +21,8 @@
 #define MAX_SIZE_COM 3
 
 
-ElemTree *InsertSplay(ElemTree *tree, ElemTree *ElemToIns);
+node *InsertSplay(node *tree, node *ElemToIns);
 
-ElemTree *RemoveSPlay(ElemTree *head, int elem);
+node *RemoveSPlay(node *head, int elem);
 
 #endif //LAB_TREE_SPLAY_TREE_H

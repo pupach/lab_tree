@@ -20,13 +20,13 @@
 
 
 typedef struct{
-    ElemTree *head;
+    node *head;
 }AvlTree;
 
-void InsertAvl(AvlTree *tree, ElemTree *ElemToIns);
+void InsertAvl(AvlTree *tree, node *ElemToIns);
 
 void RemoveAvl(AvlTree *tree, int elem);
 
-ElemTree *AvlRemove(ElemTree *avl, int key);
+node *AvlRemove(node *avl, int key);
 
 #endif //LAB_TREE_AVL_TREE_H

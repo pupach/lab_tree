@@ -29,10 +29,10 @@ TestTimeAll DoTest(int size, int max_size)
 {
   TestTimeAll ret = {};
 
-  ElemTree *Avl_elems = calloc(size, sizeof(ElemTree));
-  ElemTree *Bin_elems = calloc(size, sizeof(ElemTree));
-  ElemTree *Decart_elems = calloc(size, sizeof(ElemTree));
-  ElemTree *Splay_elems = calloc(size, sizeof(ElemTree));
+  node *Avl_elems = calloc(size, sizeof(node));
+  node *Bin_elems = calloc(size, sizeof(node));
+  node *Decart_elems = calloc(size, sizeof(node));
+  node *Splay_elems = calloc(size, sizeof(node));
   ElemRBT *RBT_elems = calloc(size, sizeof(ElemRBT));
   NodeBTree    *B_tree = calloc(size * 2, sizeof(NodeBTree));
 
@@ -42,8 +42,8 @@ TestTimeAll DoTest(int size, int max_size)
   b_tree.arr = B_tree;
   List skip = {};
   ListInit(&skip, size * 9);
-  ElemTree *Decart = NULL;
-  ElemTree *Splay = NULL;
+  node *Decart = NULL;
+  node *Splay = NULL;
   ElemRBT *RBT = NULL;
 
   int *data = (int *)calloc(size, sizeof(int));

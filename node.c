@@ -3,26 +3,27 @@
 //
 
 #include "node.h"
+#include <stddef.h>
 
-ElemTree *GetParent(ElemTree *elem)
+node *parent_get(node *elem)
 {
   if(elem == NULL) return  NULL;
   return elem->prev;
 
 }
 
-void SetParent(ElemTree *elem, ElemTree *parent)
+void parent_set(node *elem, node *parent)
 {
   if(elem == NULL) return ;
   elem->prev = parent;
 }
 
-void RightRotate(ElemTree *head)
+void rotate_right(node *head)
 {
-  ElemTree *another, *another_prev_head;
-  ElemTree *to_rotate = head->right;
-  ElemTree *prev_head = head->prev;
-  ElemTree *to_change = NULL;
+  node *another, *another_prev_head;
+  node *to_rotate = head->right;
+  node *prev_head = head->prev;
+  node *to_change = NULL;
   if(to_rotate != NULL )    to_change = to_rotate->left;
 
 
@@ -47,12 +48,12 @@ void RightRotate(ElemTree *head)
   head->right = to_change;
 }
 
-void LeftRotate(ElemTree *head)
+void rotate_left(node *head)
 {
-  ElemTree *another, *another_prev_head;
-  ElemTree *to_rotate = head->left;
-  ElemTree *prev_head = head->prev;
-  ElemTree *to_change = NULL;
+  node *another, *another_prev_head;
+  node *to_rotate = head->left;
+  node *prev_head = head->prev;
+  node *to_change = NULL;
   if(to_rotate != NULL )    to_change = to_rotate->right;
 
   if(head->prev != NULL)

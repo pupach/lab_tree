@@ -20,7 +20,7 @@
 
 #include "..\node.h"
 
-ElemTree *InsertDecart(ElemTree *tree, ElemTree * val);
-ElemTree *DeleteDecart(ElemTree *tree, int val);
-ElemTree *RemoveDecart(ElemTree *head, int elem);
+node *InsertDecart(node *tree, node * val);
+node *DeleteDecart(node *tree, int val);
+node *RemoveDecart(node *head, int elem);
 #endif //LAB_TREE_DECARTACH_H

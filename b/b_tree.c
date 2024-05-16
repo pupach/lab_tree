@@ -132,7 +132,7 @@ void FillNode(NodeBTree *node, int index);
 
 int Get(NodeBTree *node, int index);
 
-int GetParentBTree(NodeBTree *node, int index);
+int parent_getBTree(NodeBTree *node, int index);
 
 void BorrowPrev(NodeBTree *node, int index);
 
@@ -188,7 +188,7 @@ void RemoveFromDontLeaf(NodeBTree *node, int index)
     NodeBTree *child = node->child[index];
     if (child->n >= MAX_CHILDREN)
     {
-        int pred = GetParentBTree(node, index);
+        int pred = parent_getBTree(node, index);
         node->key[index] = pred;
         RemoveNodeBTree(node->child[index], pred);
     }
@@ -206,7 +206,7 @@ void RemoveFromDontLeaf(NodeBTree *node, int index)
     return;
 }
 
-int GetParentBTree(NodeBTree *node, int index)
+int parent_getBTree(NodeBTree *node, int index)
 {
     NodeBTree *cur = node->child[index];
     while (!cur->leaf)
