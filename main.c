@@ -184,7 +184,7 @@ TestTimeAll DoTest(int size, int max_size)
   return ret;
 }
 
-#define AMOUNT_TEST 23
+#define AMOUNT_TEST 10
 #define COUNT_HASH_TABLE 6
 #define AMOUNT_TRY 5
 
@@ -208,7 +208,7 @@ int main() {
   double time_insert[AMOUNT_TEST][COUNT_HASH_TABLE] = {};
   double time_remove[AMOUNT_TEST][COUNT_HASH_TABLE] = {};
 
-  for(int i = 1; i < AMOUNT_TEST + 1; i += 1)
+  for(int i = 1; i < AMOUNT_TEST + 1; i ++)
   {
     for(int j = 0; j < AMOUNT_TRY; j++)
     {
@@ -237,6 +237,8 @@ int main() {
 
     }
   }
+  fprintf(stderr, "Before\n");
+
   for(int i = 0; i < AMOUNT_TEST; i++)
   {
     fprintf(stream_AVL_insert, "%d,%lf\n", (100000 * (i + 1)), time_insert[i][0]);
@@ -246,7 +248,6 @@ int main() {
     fprintf(stream_Skip_insert, "%d,%lf\n", (100000 * (i + 1)), time_insert[i][4]);
     fprintf(stream_Bin_insert, "%d,%lf\n", (100000 * (i + 1)), time_insert[i][5]);
     fprintf(stream_BTree_insert, "%d,%lf\n", (100000 * (i + 1)), time_insert[i][6]);
-
   }
 
   for(int i = 0; i < AMOUNT_TEST; i++)
