@@ -23,10 +23,29 @@ typedef struct{
     node *head;
 }AvlTree;
 
-void InsertAvl(AvlTree *tree, node *ElemToIns);
+/**
+ * @brief Inserts the key in tree.
+ * 
+ * @param[in] указатель на находящиеся в структуре Avl дерево
+ * @param[in] Узел для вставки
+ */
 
+void InsertAvl(AvlTree *tree, node *ElemToIns);
+/**
+ * @brief Удаляет имеющийся ключ из дерева
+ * 
+ * @param[in] указатель на находящиеся в структуре Avl дерево
+ * @param[in] знвчение, подлежащее удалению
+ */
 void RemoveAvl(AvlTree *tree, int elem);
 
+/**
+ * @brief Удаляет имеющийся ключ из дерева
+ * 
+ * @param[in] указатель на корень дерева
+ * @param[in] знвчение, подлежащее удалению
+ *  @return указатель на узел, наиболее близкий по значению к удаленному
+ */
 node *AvlRemove(node *avl, int key);
 
 #endif //LAB_TREE_AVL_TREE_H
