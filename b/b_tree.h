@@ -27,8 +27,21 @@ typedef struct{
     int size;
 } btree;
 
+
+/**
+ * @brief Удаляет имеющийся ключ из дерева
+ * 
+ * @param[in] указатель на структуру самого дерева
+ * @param[in] значение, подлежащее удалению
+ */
 void removeBtree(btree *tree, int k);
 
+/**
+ * @brief Вставляет узел в дерево
+ * 
+ * @param[in] указатель на структуру самого дерева
+ * @param[in] Значение для вставки
+ */
 void insert(btree *tree, int k);
 
 #endif //LAB_HASH_B_TREE_H
