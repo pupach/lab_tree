@@ -20,7 +20,20 @@
 
 #include "..\node.h"
 
+/**
+ * @brief Вставляет узел в дерево
+ * 
+ * @param[in] указатель на узел, являющийся корнем дерева
+ * @param[in] Узел для вставки
+ *  @return новый узел, являющийся корнем дерева
+ */
 node *InsertDecart(node *tree, node * val);
-node *DeleteDecart(node *tree, int val);
+/**
+ * @brief Удаляет имеющийся ключ из дерева
+ * 
+ * @param[in] указатель на узел, являющийся корнем дерева
+ * @param[in] значение, подлежащее удалению
+ *  @return новый узел, являющийся корнем дерева
+ */
 node *RemoveDecart(node *head, int elem);
 #endif //LAB_TREE_DECARTACH_H
