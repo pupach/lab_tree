@@ -31,10 +31,31 @@ typedef struct {
 
 }List;
 
+/**
+ * @brief Создает список с пропусками по адресу переданного указателя
+ * 
+ * @param[in] указатель на список с пропусками
+ * @param[in] размер первоночального массива
+ */
+
 void ListInit(List *list, int MAX_SIZE_ARR);
 
+/**
+ * @brief Удаляет узел из списка с пропусками
+ * 
+ * @param[in] указатель на список с пропусками
+ * @param[in] значение, подлежащее удалению
+ *  @return NULL
+ */
 Node *Remove(List *list, int ToRemove);
 
+/**
+ * @brief Вставляет узел в список с пропусками
+ * 
+ * @param[in] указатель на список с пропусками
+ * @param[in] Узел для вставки
+ *  @return NULL
+ */
 Node *Insert(List *list, Node *ToInsert);
 
 #endif //LAB_TREE_SKIP_LIST_H
