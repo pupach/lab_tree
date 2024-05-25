@@ -1,17 +1,16 @@
 #include <stdio.h>
-#include "Avl_tree.h"
-#include "Decartach.h"
-#include "Splay_tree.h"
-#include "RedBlackTree.h"
-#include "Skip_List.h"
-#include "BinTree.h"
-#include "b_tree.h"
+#include "avl\avl_tree.h"
+#include "decart\decart_tree.h"
+#include "splay\splay_tree.h"
+#include "rb\rb_tree.h"
+#include "skip\skip_list.h"
+#include "bin\bin_tree.h"
+#include "b\b_tree.h"
 
 typedef struct{
-    clock_t Insert;
-    clock_t Remove;
-
-}TestTimeOne;
+  clock_t Insert;
+  clock_t Remove;
+} TestTimeOne;
 
 typedef struct{
   TestTimeOne Avl;
@@ -21,18 +20,17 @@ typedef struct{
   TestTimeOne RBT;
   TestTimeOne Skip;
   TestTimeOne Btree;
+} TestTimeAll;
 
-}TestTimeAll;
-
-
-TestTimeAll DoTest(int size, int max_size)
+TestTimeAll do_test(int size, int max_size)
 {
   TestTimeAll ret = {};
 
-  ElemTree *Avl_elems = calloc(size, sizeof(ElemTree));
-  ElemTree *Bin_elems = calloc(size, sizeof(ElemTree));
-  ElemTree *Decart_elems = calloc(size, sizeof(ElemTree));
-  ElemTree *Splay_elems = calloc(size, sizeof(ElemTree));
+  node *Avl_elems = calloc(size, sizeof(node));
+  if()
+  node *Bin_elems = calloc(size, sizeof(node));
+  node *Decart_elems = calloc(size, sizeof(node));
+  node *Splay_elems = calloc(size, sizeof(node));
   ElemRBT *RBT_elems = calloc(size, sizeof(ElemRBT));
   NodeBTree    *B_tree = calloc(size * 2, sizeof(NodeBTree));
 
@@ -42,8 +40,8 @@ TestTimeAll DoTest(int size, int max_size)
   b_tree.arr = B_tree;
   List skip = {};
   ListInit(&skip, size * 9);
-  ElemTree *Decart = NULL;
-  ElemTree *Splay = NULL;
+  node *Decart = NULL;
+  node *Splay = NULL;
   ElemRBT *RBT = NULL;
 
   int *data = (int *)calloc(size, sizeof(int));
@@ -69,7 +67,7 @@ TestTimeAll DoTest(int size, int max_size)
   srand(clock());
   for(int i = 0; i < size; i++)
   {
-      Insert(&skip, skip.arr + i + begin_cap);
+    Insert(&skip, skip.arr + i + begin_cap);
   }
   ret.Skip.Insert = clock() - ret.Skip.Insert;
   printf("Skip done\n");
@@ -118,7 +116,7 @@ TestTimeAll DoTest(int size, int max_size)
   ret.Splay.Insert = clock();
   for(int i = 0; i < size; i++)
   {
-      LOG("i = %d\n", i);
+    LOG("i = %d\n", i);
     Splay = InsertSplay(Splay, Splay_elems + i);
   }
   ret.Splay.Insert = clock() - ret.Splay.Insert;
@@ -127,8 +125,8 @@ TestTimeAll DoTest(int size, int max_size)
   ret.RBT.Insert = clock();
   for(int i = 0; i < size; i++)
   {
-      ElemRBT *ret = InsertRBT(RBT, RBT_elems + i);
-      if(ret != NULL)  RBT = ret;
+    ElemRBT *ret = InsertRBT(RBT, RBT_elems + i);
+    if(ret != NULL)  RBT = ret;
   }
   ret.RBT.Insert = clock() - ret.RBT.Insert;
 
@@ -136,7 +134,7 @@ TestTimeAll DoTest(int size, int max_size)
   ret.Avl.Remove = clock();
   for(int i = 0; i < (size / 2); i++)
   {
-      //LOG("Avl.Remove = %d head = %d i = %d\n", data[index[i]], Avl.head->val, i);
+    //LOG("Avl.Remove = %d head = %d i = %d\n", data[index[i]], Avl.head->val, i);
     Avl.head = AvlRemove(Avl.head, data[index[i]]);
   }
   ret.Avl.Remove = clock() - ret.Avl.Remove;
@@ -181,10 +179,12 @@ TestTimeAll DoTest(int size, int max_size)
   free(Decart_elems);
   free(Splay_elems);
   free(RBT_elems);
+  free(B_tree);
+  free(Bin_elems);
   return ret;
 }
 
-#define AMOUNT_TEST 23
+#define AMOUNT_TEST 10
 #define COUNT_HASH_TABLE 6
 #define AMOUNT_TRY 5
 
@@ -192,28 +192,29 @@ TestTimeAll DoTest(int size, int max_size)
 
 int main() {
   TestTimeAll time;
-  FILE *stream_BTree_insert    = fopen("../data/BTree_insert.txt",    "w");
-  FILE *stream_Skip_insert    = fopen("../data/Skip_insert.txt",    "w");
-  FILE *stream_Skip_remove    = fopen("../data/Skip_remove.txt",    "w");
-  FILE *stream_Bin_insert    = fopen("../data/Bin_insert.txt",    "w");
-  FILE *stream_Bin_remove    = fopen("../data/Bin_remove.txt",    "w");
-  FILE *stream_AVL_insert    = fopen("../data/AVL_insert.txt",    "w");
-  FILE *stream_decart_insert = fopen("../data/decart_insert.txt", "w");
-  FILE *stream_splay_insert  = fopen("../data/splay_insert.txt",  "w");
-  FILE *stream_RBT_insert    = fopen("../data/RBT_insert.txt",    "w");
-  FILE *stream_AVL_remove    = fopen("../data/AVL_remove.txt",    "w");
-  FILE *stream_decart_remove = fopen("../data/decart_remove.txt", "w");
-  FILE *stream_splay_remove  = fopen("../data/splay_remove.txt",  "w");
-  FILE *stream_RBT_remove    = fopen("../data/RBT_remove.txt",    "w");
   double time_insert[AMOUNT_TEST][COUNT_HASH_TABLE] = {};
   double time_remove[AMOUNT_TEST][COUNT_HASH_TABLE] = {};
 
-  for(int i = 1; i < AMOUNT_TEST + 1; i += 1)
+  FILE *stream_BTree_insert  = fopen("../data/BTree_insert.txt",  "w");
+  FILE *stream_Skip_insert   = fopen("../data/skip_insert.txt",   "w");
+  FILE *stream_Skip_remove   = fopen("../data/skip_remove.txt",   "w");
+  FILE *stream_Bin_insert    = fopen("../data/bin_insert.txt",    "w");
+  FILE *stream_Bin_remove    = fopen("../data/bin_remove.txt",    "w");
+  FILE *stream_AVL_insert    = fopen("../data/avl_insert.txt",    "w");
+  FILE *stream_AVL_remove    = fopen("../data/avl_remove.txt",    "w");
+  FILE *stream_decart_insert = fopen("../data/decart_insert.txt", "w");
+  FILE *stream_decart_remove = fopen("../data/decart_remove.txt", "w");
+  FILE *stream_splay_insert  = fopen("../data/splay_insert.txt",  "w");
+  FILE *stream_splay_remove  = fopen("../data/splay_remove.txt",  "w");
+  FILE *stream_RBT_insert    = fopen("../data/rb_insert.txt",     "w");
+  FILE *stream_RBT_remove    = fopen("../data/rb_remove.txt",     "w");
+
+  for(int i = 1; i < AMOUNT_TEST + 1; i ++)
   {
     for(int j = 0; j < AMOUNT_TRY; j++)
     {
       fprintf(stderr, "i*j = %d\n", 3*i - 3 + j );
-      time = DoTest(i * 100000, 10000000);
+      time = do_test(i * 100000, 10000000);
 
       time_insert[i - 1][0] += (double) time.Avl.Insert / AMOUNT_TRY / CLOCKS_PER_SEC;
       time_remove[i - 1][0] += (double) time.Avl.Remove / AMOUNT_TRY / CLOCKS_PER_SEC;
@@ -237,25 +238,25 @@ int main() {
 
     }
   }
+
   for(int i = 0; i < AMOUNT_TEST; i++)
   {
-    fprintf(stream_AVL_insert, "%d,%lf\n", (100000 * (i + 1)), time_insert[i][0]);
+    fprintf(stream_AVL_insert, "%d,%lf\n",    (100000 * (i + 1)), time_insert[i][0]);
     fprintf(stream_decart_insert, "%d,%lf\n", (100000 * (i + 1)), time_insert[i][1]);
-    fprintf(stream_splay_insert, "%d,%lf\n", (100000 * (i + 1)), time_insert[i][2]);
-    fprintf(stream_RBT_insert, "%d,%lf\n", (100000 * (i + 1)), time_insert[i][3]);
-    fprintf(stream_Skip_insert, "%d,%lf\n", (100000 * (i + 1)), time_insert[i][4]);
-    fprintf(stream_Bin_insert, "%d,%lf\n", (100000 * (i + 1)), time_insert[i][5]);
-    fprintf(stream_BTree_insert, "%d,%lf\n", (100000 * (i + 1)), time_insert[i][6]);
-
+    fprintf(stream_splay_insert, "%d,%lf\n",  (100000 * (i + 1)), time_insert[i][2]);
+    fprintf(stream_RBT_insert, "%d,%lf\n",    (100000 * (i + 1)), time_insert[i][3]);
+    fprintf(stream_Skip_insert, "%d,%lf\n",   (100000 * (i + 1)), time_insert[i][4]);
+    fprintf(stream_Bin_insert, "%d,%lf\n",    (100000 * (i + 1)), time_insert[i][5]);
+    fprintf(stream_BTree_insert, "%d,%lf\n",  (100000 * (i + 1)), time_insert[i][6]);
   }
 
   for(int i = 0; i < AMOUNT_TEST; i++)
   {
-    fprintf(stream_AVL_remove, "%d,%lf\n", (100000 * (i + 1) / 2), time_remove[i][0]);
+    fprintf(stream_AVL_remove, "%d,%lf\n",    (100000 * (i + 1) / 2), time_remove[i][0]);
     fprintf(stream_decart_remove, "%d,%lf\n", (100000 * (i + 1) / 2), time_remove[i][1]);
     fprintf(stream_splay_remove, "%d,%lf\n",  (100000 * (i + 1) / 2), time_remove[i][2]);
     fprintf(stream_RBT_remove, "%d,%lf\n",    (100000 * (i + 1) / 2), time_remove[i][3]);
-    fprintf(stream_Skip_remove, "%d,%lf\n",    (100000 * (i + 1) / 2), time_remove[i][4]);
+    fprintf(stream_Skip_remove, "%d,%lf\n",   (100000 * (i + 1) / 2), time_remove[i][4]);
     fprintf(stream_Bin_remove, "%d,%lf\n",    (100000 * (i + 1) / 2), time_remove[i][5]);
   }
 
@@ -272,7 +273,6 @@ int main() {
   fclose(stream_splay_insert);
   fclose(stream_RBT_insert);
   fclose(stream_BTree_insert);
+
   return 0;
 }
-
-
